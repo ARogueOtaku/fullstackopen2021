@@ -1,0 +1,23 @@
+participant Browser
+participant Server
+
+note left of Browser:
+user types new note "Test"
+and clicks on save
+end note
+
+note over Browser:
+browser executes js-code that:
+
+1. add new note to notes array.
+2. render new note to display.
+3. send new note to server.
+end note
+
+Browser->Server: HTTPS POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa [body: content=Test, date=current date]
+
+note over Server:
+server saves "Test" to database/in memory
+end note
+
+Server-->Browser: 201 Response [body: message=note created]

@@ -1,0 +1,31 @@
+participant Browser
+participant Server
+
+Browser->Server: HTTPS GET https://studies.cs.helsinki.fi/exampleapp/spa
+Server-->Browser: 200 Response HTML-code
+Browser->Server: HTTPS GET https://studies.cs.helsinki.fi/exampleapp/main.css
+Server-->Browser: 200 Response main.css [Style sheet]
+Browser->Server: HTTPS GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+Server-->Browser: 200 Response spa.js [Javascript Code file]
+
+note over Browser:
+browser starts executing js-code that:
+
+1. declares a notes array that will store all the notes fetched from server
+2. requests JSON notes data from server
+end note
+
+Browser->Server: HTTPS GET https://studies.cs.helsinki.fi/exampleapp/data.json
+
+note over Server:
+server loads all notes data from database/memory
+end note
+
+Server-->Browser: 200 Response JSON Data [{"content":"test","date":"2021-04-09T12:24:50.459Z"}, ...]
+
+note over Browser:
+browser executes the event handler that:
+
+1. stores all the data in the notes array
+2. renders notes to display
+end note

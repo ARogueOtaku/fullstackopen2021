@@ -1,0 +1,45 @@
+participant Browser
+participant Server
+
+note left of Browser:
+user types new note "Test"
+and clicks on save
+end note
+
+Browser->Server: HTTPS POST https://studies.cs.helsinki.fi/exampleapp/new_note [body: note=Test]
+
+note over Server:
+server saves "Test" to database/in memory
+end note
+
+Server-->Browser: 302 Response [Header: location=/exampleapp/notes, others..]
+
+note over Browser:
+browser redirects to
+location header of response
+end note
+
+Browser->Server: HTTPS GET https://studies.cs.helsinki.fi/exampleapp/notes
+Server-->Browser: 304 Response HTML-code
+Browser->Server: HTTPS GET https://studies.cs.helsinki.fi/exampleapp/main.css
+Server-->Browser: 304 Response main.css [Style sheet]
+Browser->Server: HTTPS GET https://studies.cs.helsinki.fi/exampleapp/main.js
+Server-->Browser: 304 Response main.js [Javascript Code file]
+
+note over Browser:
+browser starts executing js-code
+that requests JSON data from server 
+end note
+
+Browser->Server: HTTPS GET https://studies.cs.helsinki.fi/exampleapp/data.json
+
+note over Server:
+server loads all notes data from database/memory
+end note
+
+Server-->Browser: 200 Response JSON Data [{"content":"test","date":"2021-04-09T12:24:50.459Z"}, ...]
+
+note over Browser:
+browser executes the event handler
+that renders notes to display
+end note
